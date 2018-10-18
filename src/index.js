@@ -2,19 +2,7 @@ const { GraphQLServer } = require('graphql-yoga');
 
 //1
 //Schema definition
-const typeDefs = `
-type Query {
-    info: String!
-    feed : [Link!]!
-}
 
-type Link
-{
-    id : ID!
-    description : String!
-    url : String!
-}
-`
 
 //1 ->dummy data for links 
 let links = [{
@@ -27,11 +15,24 @@ let links = [{
     url :'https://graphql.org/',
     description: 'Official documentation'
 }]
+let idCount = links.length
 //2 -> implementing the query schema
 const resolvers = {
     Query:{
         info : () =>  `This is the API of a Hackernews Clone`,
         feed : () => links
+    },
+    Mutation : {
+        post:(root,args) => {
+            const link = {
+                id: `link-${idCount++}`,
+                description: args.description,
+                url:args.url
+            }
+            links.push(link)
+            
+            return link
+        }
     },
     Link : {
         id: (root) => root.id ,
@@ -43,7 +44,7 @@ const resolvers = {
 //3-> schema and resolvers passed
 //Tells what api operations are accepted and how they will be resolved
 const server = new GraphQLServer({
-    typeDefs,
+    typeDefs : './src/schema.graphql',
     resolvers
 })
 
