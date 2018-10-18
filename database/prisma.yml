@@ -1,0 +1,9 @@
+# Http endpoint for prisma API
+#endpoint: ''endpoint: https://us1.prisma.sh/varsha-kukreja/database/dev
+
+
+#pointing to file that holds the data model
+datamodel: datamodel.graphql
+
+#can only access the API when jwts are signed with this secret
+secret : mysecret123
